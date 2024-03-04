@@ -558,10 +558,10 @@ type FamilyVariant struct {
 	Links                Links                 `json:"_links,omitempty" mapstructure:"_links"`
 	Code                 string                `json:"code,omitempty" mapstructure:"code"`                                     // The code of the family variant
 	Lables               map[string]string     `json:"labels,omitempty" mapstructure:"labels"`                                 // Translatable labels. Ex: {"en_US": "T-shirt", "fr_FR": "T-shirt"}
-	VariantAttributeSets []variantAttributeSet `json:"variant_attribute_sets,omitempty" mapstructure:"variant_attribute_sets"` // The variant attribute sets of the family variant
+	VariantAttributeSets []VariantAttributeSet `json:"variant_attribute_sets,omitempty" mapstructure:"variant_attribute_sets"` // The variant attribute sets of the family variant
 }
 
-type variantAttributeSet struct {
+type VariantAttributeSet struct {
 	Level      int      `json:"level,omitempty" mapstructure:"level"`           // The level of the variant attribute set
 	Axes       []string `json:"axes,omitempty" mapstructure:"axes"`             // The axes of the variant attribute set
 	Attributes []string `json:"attributes,omitempty" mapstructure:"attributes"` // The attributes of the variant attribute set
