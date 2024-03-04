@@ -46,7 +46,7 @@ type ErrorResponse struct {
 
 // Product is the struct for an akeneo product
 type Product struct {
-	Links                  Links                            `json:"_links,omitempty" mapstructure:"_links"`
+	Links                  *Links                           `json:"_links,omitempty" mapstructure:"_links"`
 	UUID                   string                           `json:"uuid,omitempty" mapstructure:"uuid"` // Since Akeneo 7.0
 	Identifier             string                           `json:"identifier,omitempty" mapstructure:"identifier"`
 	Enabled                bool                             `json:"enabled,omitempty" mapstructure:"enabled"`
@@ -487,7 +487,7 @@ func (TableValue) ValueType() int {
 
 // ProductModel is the struct for an akeneo product model
 type ProductModel struct {
-	Links                  Links                            `json:"_links,omitempty" mapstructure:"_links"`
+	Links                  *Links                           `json:"_links,omitempty" mapstructure:"_links"`
 	Code                   string                           `json:"code,omitempty" mapstructure:"code"`
 	Family                 string                           `json:"family,omitempty" mapstructure:"family"`
 	FamilyVariant          string                           `json:"family_variant,omitempty" mapstructure:"family_variant"`
@@ -555,7 +555,7 @@ type Family struct {
 
 // FamilyVariant is the struct for an akeneo family variant
 type FamilyVariant struct {
-	Links                Links                 `json:"_links,omitempty" mapstructure:"_links"`
+	Links                *Links                `json:"_links,omitempty" mapstructure:"_links"`
 	Code                 string                `json:"code,omitempty" mapstructure:"code"`                                     // The code of the family variant
 	Lables               map[string]string     `json:"labels,omitempty" mapstructure:"labels"`                                 // Translatable labels. Ex: {"en_US": "T-shirt", "fr_FR": "T-shirt"}
 	VariantAttributeSets []VariantAttributeSet `json:"variant_attribute_sets,omitempty" mapstructure:"variant_attribute_sets"` // The variant attribute sets of the family variant
@@ -603,7 +603,7 @@ type Attribute struct {
 
 // AttributeOption is the struct for an akeneo attribute option,see:
 type AttributeOption struct {
-	Links     Links             `json:"_links,omitempty" mapstructure:"_links"`
+	Links     *Links            `json:"_links,omitempty" mapstructure:"_links"`
 	Code      string            `json:"code,omitempty" mapstructure:"code"`
 	Attribute string            `json:"attribute,omitempty" mapstructure:"attribute"`
 	SortOrder int               `json:"sort_order,omitempty" mapstructure:"sort_order"`
@@ -612,7 +612,7 @@ type AttributeOption struct {
 
 // Category is the struct for an akeneo category
 type Category struct {
-	Links    Links                    `json:"_links,omitempty" mapstructure:"_links"`
+	Links    *Links                   `json:"_links,omitempty" mapstructure:"_links"`
 	Code     string                   `json:"code,omitempty" mapstructure:"code"`
 	Parent   string                   `json:"parent,omitempty" mapstructure:"parent"`
 	Updated  string                   `json:"updated,omitempty" mapstructure:"updated"`
@@ -633,7 +633,7 @@ type categoryValue struct {
 
 // Channel is the struct for an akeneo channel
 type Channel struct {
-	Links           Links             `json:"_links,omitempty" mapstructure:"_links"`
+	Links           *Links            `json:"_links,omitempty" mapstructure:"_links"`
 	Code            string            `json:"code,omitempty" mapstructure:"code"`
 	Currencies      []string          `json:"currencies,omitempty" mapstructure:"currencies"`
 	Locales         []string          `json:"locales,omitempty" mapstructure:"locales"`
@@ -644,7 +644,7 @@ type Channel struct {
 
 // Locale is the struct for an akeneo locale
 type Locale struct {
-	Links   Links  `json:"_links,omitempty" mapstructure:"_links"`
+	Links   *Links `json:"_links,omitempty" mapstructure:"_links"`
 	Code    string `json:"code,omitempty" mapstructure:"code"`
 	Enabled bool   `json:"enabled,omitempty" mapstructure:"enabled"`
 }
@@ -656,7 +656,7 @@ type MediaFile struct {
 	MimeType         string `json:"mime_type,omitempty" mapstructure:"mime_type"`
 	Size             int    `json:"size,omitempty" mapstructure:"size"`
 	Extension        string `json:"extension,omitempty" mapstructure:"extension"`
-	Links            Links  `json:"_links,omitempty" mapstructure:"_links"`
+	Links            *Links `json:"_links,omitempty" mapstructure:"_links"`
 }
 
 // DownloadURL function returns the download url of the media file
