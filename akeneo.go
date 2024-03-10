@@ -3,6 +3,7 @@ package goakeneo
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/go-resty/resty/v2"
 	"io"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -218,6 +220,15 @@ func (c *Client) createAndDoGetHeaders(method, relPath string, opts, data, resul
 	}
 	// see : https://api.akeneo.com/documentation/responses.html
 	if resp.IsError() {
+		// show all validation errors
+		if errResp.Code == 422 && len(errResp.Errors) > 0 {
+			errMessages := make([]string, len(errResp.Errors))
+			for i, err := range errResp.Errors {
+				errMessages[i] = fmt.Sprintf("Attribute '%s', property '%s': %s", err.Attribute, err.Property, err.Message)
+			}
+			return http.Header{}, errors.Wrapf(errors.New(strings.Join(errMessages, "; ")), "request error : %s", errResp.Message)
+		}
+		// default response
 		return http.Header{}, errors.Errorf("request error : %s", errResp.Message)
 	}
 	return resp.Header(), nil

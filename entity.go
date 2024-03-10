@@ -40,8 +40,17 @@ var ValueTypeName = map[int]string{
 }
 
 type ErrorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code    int               `json:"code"`
+	Message string            `json:"message"`
+	Errors  []ValidationError `json:"errors,omitempty"`
+}
+
+type ValidationError struct {
+	Property  string `json:"property,omitempty"`
+	Message   string `json:"message,omitempty"`
+	Attribute string `json:"attribute,omitempty"`
+	Locale    string `json:"locale,omitempty"`
+	Scope     string `json:"scope,omitempty"`
 }
 
 // Product is the struct for an akeneo product
