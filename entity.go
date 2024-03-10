@@ -585,28 +585,28 @@ type Attribute struct {
 	Labels              map[string]string `json:"labels,omitempty" mapstructure:"labels"`
 	Group               string            `json:"group,omitempty" mapstructure:"group"`
 	GroupLabels         map[string]string `json:"group_labels,omitempty" mapstructure:"group_labels"`
-	SortOrder           int               `json:"sort_order,omitempty" mapstructure:"sort_order"`
-	Localizable         bool              `json:"localizable,omitempty" mapstructure:"localizable"`                       // whether the attribute is localizable or not,i.e. whether it can be translated or not
-	Scopable            bool              `json:"scopable,omitempty" mapstructure:"scopable"`                             // whether the attribute is scopable or not,i.e. whether it can have different values depending on the channel or not
+	SortOrder           *int              `json:"sort_order,omitempty" mapstructure:"sort_order"`
+	Localizable         *bool             `json:"localizable,omitempty" mapstructure:"localizable"`                       // whether the attribute is localizable or not,i.e. whether it can be translated or not
+	Scopable            *bool             `json:"scopable,omitempty" mapstructure:"scopable"`                             // whether the attribute is scopable or not,i.e. whether it can have different values depending on the channel or not
 	AvailableLocales    []string          `json:"available_locales,omitempty" mapstructure:"available_locales"`           // the list of activated locales for the attribute values
-	Unique              bool              `json:"unique,omitempty" mapstructure:"unique"`                                 // whether the attribute value is unique or not
-	UseableAsGridFilter bool              `json:"useable_as_grid_filter,omitempty" mapstructure:"useable_as_grid_filter"` // whether the attribute can be used as a filter in the product grid or not
-	MaxCharacters       int               `json:"max_characters,omitempty" mapstructure:"max_characters"`                 // the maximum number of characters allowed for the value of the attribute
-	ValidationRule      string            `json:"validation_rule,omitempty" mapstructure:"validation_rule"`               // validation rule code to validate the attribute value
-	ValidationRegexp    string            `json:"validation_regexp,omitempty" mapstructure:"validation_regexp"`           // validation regexp to validate the attribute value
-	WysiwygEnabled      bool              `json:"wysiwyg_enabled,omitempty" mapstructure:"wysiwyg_enabled"`               // whether the attribute can have a value per channel or not
-	NumberMin           string            `json:"number_min,omitempty" mapstructure:"number_min"`                         // the minimum value allowed for the value of the attribute
-	NumberMax           string            `json:"number_max,omitempty" mapstructure:"number_max"`                         // the maximum value allowed for the value of the attribute
-	DecimalsAllowed     bool              `json:"decimals_allowed,omitempty" mapstructure:"decimals_allowed"`             // whether decimals are allowed for the attribute or not
-	NegativeAllowed     bool              `json:"negative_allowed,omitempty" mapstructure:"negative_allowed"`             // whether negative numbers are allowed for the attribute or not
-	MetricFamily        string            `json:"metric_family,omitempty" mapstructure:"metric_family"`                   // the metric family of the attribute
-	DefaultMetricUnit   string            `json:"default_metric_unit,omitempty" mapstructure:"default_metric_unit"`       // the default metric unit of the attribute
-	DateMin             string            `json:"date_min,omitempty" mapstructure:"date_min"`                             // the minimum date allowed for the value of the attribute
-	DateMax             string            `json:"date_max,omitempty" mapstructure:"date_max"`                             // the maximum date allowed for the value of the attribute
+	Unique              *bool             `json:"unique,omitempty" mapstructure:"unique"`                                 // whether the attribute value is unique or not
+	UseableAsGridFilter *bool             `json:"useable_as_grid_filter,omitempty" mapstructure:"useable_as_grid_filter"` // whether the attribute can be used as a filter in the product grid or not
+	MaxCharacters       *int              `json:"max_characters,omitempty" mapstructure:"max_characters"`                 // the maximum number of characters allowed for the value of the attribute
+	ValidationRule      *string           `json:"validation_rule,omitempty" mapstructure:"validation_rule"`               // validation rule code to validate the attribute value
+	ValidationRegexp    *string           `json:"validation_regexp,omitempty" mapstructure:"validation_regexp"`           // validation regexp to validate the attribute value
+	WysiwygEnabled      *bool             `json:"wysiwyg_enabled,omitempty" mapstructure:"wysiwyg_enabled"`               // whether the attribute can have a value per channel or not
+	NumberMin           *string           `json:"number_min,omitempty" mapstructure:"number_min"`                         // the minimum value allowed for the value of the attribute
+	NumberMax           *string           `json:"number_max,omitempty" mapstructure:"number_max"`                         // the maximum value allowed for the value of the attribute
+	DecimalsAllowed     *bool             `json:"decimals_allowed,omitempty" mapstructure:"decimals_allowed"`             // whether decimals are allowed for the attribute or not
+	NegativeAllowed     *bool             `json:"negative_allowed,omitempty" mapstructure:"negative_allowed"`             // whether negative numbers are allowed for the attribute or not
+	MetricFamily        *string           `json:"metric_family,omitempty" mapstructure:"metric_family"`                   // the metric family of the attribute
+	DefaultMetricUnit   *string           `json:"default_metric_unit,omitempty" mapstructure:"default_metric_unit"`       // the default metric unit of the attribute
+	DateMin             *string           `json:"date_min,omitempty" mapstructure:"date_min"`                             // the minimum date allowed for the value of the attribute
+	DateMax             *string           `json:"date_max,omitempty" mapstructure:"date_max"`                             // the maximum date allowed for the value of the attribute
 	AllowedExtensions   []string          `json:"allowed_extensions,omitempty" mapstructure:"allowed_extensions"`         // the list of allowed extensions for the value of the attribute
-	MaxFileSize         string            `json:"max_file_size,omitempty" mapstructure:"max_file_size"`                   // the maximum file size allowed for the value of the attribute
-	ReferenceDataName   string            `json:"reference_data_name,omitempty" mapstructure:"reference_data_name"`       // the reference data name of the attribute
-	DefaultValue        bool              `json:"default_value,omitempty" mapstructure:"default_value"`                   // the default value of the attribute
+	MaxFileSize         *string           `json:"max_file_size,omitempty" mapstructure:"max_file_size"`                   // the maximum file size allowed for the value of the attribute
+	ReferenceDataName   *string           `json:"reference_data_name,omitempty" mapstructure:"reference_data_name"`       // the reference data name of the attribute
+	DefaultValue        *bool             `json:"default_value,omitempty" mapstructure:"default_value"`                   // the default value of the attribute
 	TableConfiguration  []string          `json:"table_configuration,omitempty" mapstructure:"table_configuration"`       // the table configuration of the attribute
 }
 
@@ -615,7 +615,7 @@ type AttributeOption struct {
 	Links     *Links            `json:"_links,omitempty" mapstructure:"_links"`
 	Code      string            `json:"code,omitempty" mapstructure:"code"`
 	Attribute string            `json:"attribute,omitempty" mapstructure:"attribute"`
-	SortOrder int               `json:"sort_order,omitempty" mapstructure:"sort_order"`
+	SortOrder *int              `json:"sort_order,omitempty" mapstructure:"sort_order"`
 	Labels    map[string]string `json:"labels,omitempty" mapstructure:"labels"`
 }
 
@@ -623,9 +623,9 @@ type AttributeOption struct {
 type Category struct {
 	Links    *Links                   `json:"_links,omitempty" mapstructure:"_links"`
 	Code     string                   `json:"code,omitempty" mapstructure:"code"`
-	Parent   string                   `json:"parent,omitempty" mapstructure:"parent"`
-	Updated  string                   `json:"updated,omitempty" mapstructure:"updated"`
-	Position int                      `json:"position,omitempty" mapstructure:"position"` // since 7.0 with query parameter "with_positions=true"
+	Parent   *string                  `json:"parent,omitempty" mapstructure:"parent"`
+	Updated  *string                  `json:"updated,omitempty" mapstructure:"updated"`
+	Position *int                     `json:"position,omitempty" mapstructure:"position"` // since 7.0 with query parameter "with_positions=true"
 	Labels   map[string]string        `json:"labels,omitempty" mapstructure:"labels"`
 	Values   map[string]categoryValue `json:"values,omitempty" mapstructure:"values"`
 }
