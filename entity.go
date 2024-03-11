@@ -102,16 +102,16 @@ type Link struct {
 }
 
 type ProductValue struct {
-	Locale     string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope      string `json:"scope,omitempty" mapstructure:"scope"`
-	Data       any    `json:"data,omitempty" mapstructure:"data"`
-	Links      any    `json:"_links,omitempty" mapstructure:"_links"`
-	LinkedData any    `json:"linked_data,omitempty" mapstructure:"linked_data"`
+	Locale     *string `json:"locale" mapstructure:"locale"`
+	Scope      *string `json:"scope" mapstructure:"scope"`
+	Data       any     `json:"data" mapstructure:"data"`
+	Links      any     `json:"_links,omitempty" mapstructure:"_links"`
+	LinkedData any     `json:"linked_data,omitempty" mapstructure:"linked_data"`
 }
 
 // IsLocalized returns true if the value is localized
 func (v ProductValue) IsLocalized() bool {
-	return v.Locale != ""
+	return v.Locale != nil && *v.Locale != ""
 }
 
 type PimProductValue interface {
@@ -122,11 +122,11 @@ type PimProductValue interface {
 func (v ProductValue) ParseValue() (PimProductValue, error) {
 
 	if v.Links != nil {
-		if _, ok := v.Data.(string); ok {
+		if _, ok := v.Data.(*string); ok {
 			result := MediaValue{
 				Locale: v.Locale,
 				Scope:  v.Scope,
-				Data:   v.Data.(string),
+				Data:   v.Data.(*string),
 			}
 			link, ok := v.Links.(map[string]interface{})
 			if !ok {
@@ -168,11 +168,11 @@ func (v ProductValue) ParseValue() (PimProductValue, error) {
 	// if v.Data != nil-> simple select, multi select
 	if v.LinkedData != nil {
 		switch v.Data.(type) {
-		case string:
+		case *string:
 			result := SimpleSelectValue{
 				Locale: v.Locale,
 				Scope:  v.Scope,
-				Data:   v.Data.(string),
+				Data:   v.Data.(*string),
 			}
 			ld, ok := v.LinkedData.(map[string]interface{})
 			if !ok {
@@ -201,11 +201,11 @@ func (v ProductValue) ParseValue() (PimProductValue, error) {
 		}
 	}
 	switch v.Data.(type) {
-	case string:
+	case *string:
 		return StringValue{
 			Locale: v.Locale,
 			Scope:  v.Scope,
-			Data:   v.Data.(string),
+			Data:   v.Data.(*string),
 		}, nil
 	case []string:
 		return StringCollectionValue{
@@ -213,17 +213,17 @@ func (v ProductValue) ParseValue() (PimProductValue, error) {
 			Scope:  v.Scope,
 			Data:   v.Data.([]string),
 		}, nil
-	case bool:
+	case *bool:
 		return BooleanValue{
 			Locale: v.Locale,
 			Scope:  v.Scope,
-			Data:   v.Data.(bool),
+			Data:   v.Data.(*bool),
 		}, nil
-	case int:
+	case *int:
 		return NumberValue{
 			Locale: v.Locale,
 			Scope:  v.Scope,
-			Data:   v.Data.(int),
+			Data:   v.Data.(*int),
 		}, nil
 	case map[string]interface{}:
 		d, _ := v.Data.(map[string]interface{})
@@ -277,10 +277,10 @@ func (v ProductValue) ParseValue() (PimProductValue, error) {
 // MediaValue
 
 type MediaValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
-	Data   string `json:"data,omitempty" mapstructure:"data"`
-	Links  *Links `json:"_links,omitempty" mapstructure:"_links"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
+	Data   *string `json:"data" mapstructure:"data"`
+	Links  *Links  `json:"_links,omitempty" mapstructure:"_links"`
 }
 
 func (MediaValue) ValueType() int {
@@ -330,9 +330,9 @@ func (v MediaSetValue) Hrefs() []string {
 // pim_catalog_file or pim_catalog_image: data is the file path
 // pim_catalog_date : data is a string in ISO-8601 format
 type StringValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
-	Data   string `json:"data,omitempty" mapstructure:"data"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
+	Data   *string `json:"data" mapstructure:"data"`
 }
 
 // ValueType returns the value type, see ValueTypeConst
@@ -342,8 +342,8 @@ func (StringValue) ValueType() int {
 
 // StringCollectionValue is the struct for an akeneo collection type product value
 type StringCollectionValue struct {
-	Locale string   `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string   `json:"scope,omitempty" mapstructure:"scope"`
+	Locale *string  `json:"locale" mapstructure:"locale"`
+	Scope  *string  `json:"scope" mapstructure:"scope"`
 	Data   []string `json:"data,omitempty" mapstructure:"data"`
 }
 
@@ -356,9 +356,9 @@ func (StringCollectionValue) ValueType() int {
 // pim_catalog_number : data is an int when decimal is false ,float64 string when decimal is true
 // so the data will be parsed as ValueTypeString when decimal is true
 type NumberValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
-	Data   int    `json:"data,omitempty" mapstructure:"data"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
+	Data   *int    `json:"data" mapstructure:"data"`
 }
 
 // ValueType returns the value type, see ValueTypeConst
@@ -369,9 +369,9 @@ func (NumberValue) ValueType() int {
 // MetricValue is the struct for an akeneo metric type product value
 // pim_catalog_metric : data amount is a float64 string when decimal is true, int when decimal is false
 type MetricValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
-	Data   metric `json:"data,omitempty" mapstructure:"data"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
+	Data   metric  `json:"data" mapstructure:"data"`
 }
 
 type metric struct {
@@ -404,8 +404,8 @@ func (v MetricValue) Unit() string {
 // PriceValue is the struct for an akeneo price type product value
 // pim_catalog_price : data amount is a float64 string when decimal is true, int when decimal is false
 type PriceValue struct {
-	Locale string  `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string  `json:"scope,omitempty" mapstructure:"scope"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
 	Data   []price `json:"data,omitempty" mapstructure:"data"`
 }
 
@@ -439,9 +439,9 @@ func (v PriceValue) Amount(currency string) string {
 // BooleanValue is the struct for an akeneo boolean type product value
 // pim_catalog_boolean : data is a bool
 type BooleanValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
-	Data   bool   `json:"data,omitempty" mapstructure:"data"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
+	Data   *bool   `json:"data" mapstructure:"data"`
 }
 
 // ValueType returns the value type, see ValueTypeConst
@@ -457,9 +457,9 @@ type linkedData struct {
 
 // SimpleSelectValue is the struct for an akeneo simple select type product value
 type SimpleSelectValue struct {
-	Locale     string     `json:"locale,omitempty" mapstructure:"locale"`
-	Scope      string     `json:"scope,omitempty" mapstructure:"scope"`
-	Data       string     `json:"data,omitempty" mapstructure:"data"`
+	Locale     *string    `json:"locale" mapstructure:"locale"`
+	Scope      *string    `json:"scope" mapstructure:"scope"`
+	Data       *string    `json:"data" mapstructure:"data"`
 	LinkedData linkedData `json:"linked_data,omitempty" mapstructure:"linked_data"`
 }
 
@@ -470,9 +470,9 @@ func (SimpleSelectValue) ValueType() int {
 
 // MultiSelectValue is the struct for an akeneo multi select type product value
 type MultiSelectValue struct {
-	Locale     string                `json:"locale,omitempty" mapstructure:"locale"`
-	Scope      string                `json:"scope,omitempty" mapstructure:"scope"`
-	Data       []string              `json:"data,omitempty" mapstructure:"data"`
+	Locale     *string               `json:"locale" mapstructure:"locale"`
+	Scope      *string               `json:"scope" mapstructure:"scope"`
+	Data       []string              `json:"data" mapstructure:"data"`
 	LinkedData map[string]linkedData `json:"linked_data,omitempty" mapstructure:"linked_data"`
 }
 
@@ -484,8 +484,8 @@ func (MultiSelectValue) ValueType() int {
 // TableValue is the struct for an akeneo table type product value
 // pim_catalog_table : data is a []map[string]any
 type TableValue struct {
-	Locale string `json:"locale,omitempty" mapstructure:"locale"`
-	Scope  string `json:"scope,omitempty" mapstructure:"scope"`
+	Locale *string `json:"locale" mapstructure:"locale"`
+	Scope  *string `json:"scope" mapstructure:"scope"`
 	Data   []map[string]any
 }
 
