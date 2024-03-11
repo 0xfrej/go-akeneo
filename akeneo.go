@@ -243,6 +243,7 @@ func (c *Client) download(downloadURL string, fp string) error {
 		SetRetryWaitTime(defaultRetryWaitTime).
 		SetRetryMaxWaitTime(defaultRetryMaxWaitTime).
 		AddRetryCondition(func(r *resty.Response, err error) bool {
+
 			return r != nil && r.StatusCode() == http.StatusTooManyRequests
 		})
 	request := client.R().
