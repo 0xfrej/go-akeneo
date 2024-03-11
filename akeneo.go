@@ -169,7 +169,7 @@ func (c *Client) createAndDoGetHeaders(method, relPath string, opts, data, resul
 		SetRetryWaitTime(defaultRetryWaitTime).
 		SetRetryMaxWaitTime(defaultRetryMaxWaitTime).
 		AddRetryCondition(func(r *resty.Response, err error) bool {
-			return r.StatusCode() == http.StatusTooManyRequests
+			return r != nil && r.StatusCode() == http.StatusTooManyRequests
 		})
 	request := client.R().
 		SetHeader("Content-Type", defaultContentType).
@@ -243,7 +243,6 @@ func (c *Client) download(downloadURL string, fp string) error {
 		SetRetryWaitTime(defaultRetryWaitTime).
 		SetRetryMaxWaitTime(defaultRetryMaxWaitTime).
 		AddRetryCondition(func(r *resty.Response, err error) bool {
-
 			return r != nil && r.StatusCode() == http.StatusTooManyRequests
 		})
 	request := client.R().
@@ -295,12 +294,12 @@ func (c *Client) upload(endpoint string, data any) (string, error) {
 		SetRetryWaitTime(defaultRetryWaitTime).
 		SetRetryMaxWaitTime(defaultRetryMaxWaitTime).
 		AddRetryCondition(func(r *resty.Response, err error) bool {
-			return r.StatusCode() == http.StatusTooManyRequests
+			return r != nil && r.StatusCode() == http.StatusTooManyRequests
 		})
 	request := client.R().
 		SetHeader("User-Agent", defaultUserAgent).
 		SetAuthToken(c.token).
-		SetHeader("Content-Type", defaultUploadContentType)
+		SetHeader("Content-Type", "multipart/form-data")
 	// rate limit
 	c.limiter.Take()
 	resp, err := request.
