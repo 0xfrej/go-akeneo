@@ -113,10 +113,10 @@ type MediaFileAssociation interface {
 	Type() string
 }
 type AssociatedProduct struct {
-	Identifier string `json:"identifier,omitempty" mapstructure:"identifier"`
-	Attribute  string `json:"attribute,omitempty" mapstructure:"attribute"`
-	Scope      string `json:"scope,omitempty" mapstructure:"scope"`
-	Locale     string `json:"locale,omitempty" mapstructure:"locale"`
+	Identifier string  `json:"identifier,omitempty" mapstructure:"identifier"`
+	Attribute  string  `json:"attribute,omitempty" mapstructure:"attribute"`
+	Scope      *string `json:"scope" mapstructure:"scope"`
+	Locale     *string `json:"locale" mapstructure:"locale"`
 }
 
 func (p AssociatedProduct) ToJSONString() string {
@@ -129,10 +129,10 @@ func (p AssociatedProduct) Type() string {
 }
 
 type AssociatedProductModel struct {
-	Code      string `json:"code,omitempty" mapstructure:"code"`
-	Attribute string `json:"attribute,omitempty" mapstructure:"attribute"`
-	Scope     string `json:"scope,omitempty" mapstructure:"scope"`
-	Locale    string `json:"locale,omitempty" mapstructure:"locale"`
+	Code      string  `json:"code,omitempty" mapstructure:"code"`
+	Attribute string  `json:"attribute,omitempty" mapstructure:"attribute"`
+	Scope     *string `json:"scope" mapstructure:"scope"`
+	Locale    *string `json:"locale" mapstructure:"locale"`
 }
 
 func (p AssociatedProductModel) ToJSONString() string {
