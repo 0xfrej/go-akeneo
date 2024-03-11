@@ -101,7 +101,7 @@ func (c *mediaOp) Create(filePath string, association MediaFileAssociation) (str
 	if err = writer.Close(); err != nil {
 		return "", errors.Wrapf(err, "failed to close writer %s", filePath)
 	}
-	uri, err := c.client.upload(mediaBasePath, &buf)
+	uri, err := c.client.upload(mediaBasePath, buf.Bytes(), writer.FormDataContentType())
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to upload file %s", filePath)
 	}

@@ -283,7 +283,7 @@ func (c *Client) download(downloadURL string, fp string) error {
 	return nil
 }
 
-func (c *Client) upload(endpoint string, data any) (string, error) {
+func (c *Client) upload(endpoint string, data any, contentType string) (string, error) {
 	if err := c.Auth.AutoRefreshToken(); err != nil {
 		return "", err
 	}
@@ -299,7 +299,7 @@ func (c *Client) upload(endpoint string, data any) (string, error) {
 	request := client.R().
 		SetHeader("User-Agent", defaultUserAgent).
 		SetAuthToken(c.token).
-		SetHeader("Content-Type", "multipart/form-data")
+		SetHeader("Content-Type", contentType)
 	// rate limit
 	c.limiter.Take()
 	resp, err := request.
@@ -314,6 +314,9 @@ func (c *Client) upload(endpoint string, data any) (string, error) {
 			return "", errors.Wrap(err, "unmarshal error")
 		}
 		return "", errors.Errorf("request error :error Code: %d, error message: %s", errResp.Code, errResp.Message)
+	}
+	if resp.String() != "" {
+		panic(resp)
 	}
 	return resp.Header().Get("Location"), nil
 }
