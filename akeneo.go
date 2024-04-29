@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/pkg/errors"
@@ -105,7 +106,7 @@ func NewClient(con Connector, opts ...Option) (*Client, error) {
 		return nil, err
 	}
 	// Set services
-	c.Auth = &authOp{c}
+	c.Auth = &authOp{c, sync.Mutex{}}
 	c.Product = &productOp{c}
 	c.Family = &familyOp{c}
 	c.Attribute = &attributeOp{c}

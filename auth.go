@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -24,6 +25,7 @@ type AuthService interface {
 
 type authOp struct {
 	client *Client
+	authMu sync.Mutex
 }
 
 // GrantByPassword authenticates to the Akeneo API using the password grant type
@@ -92,12 +94,16 @@ func (a *authOp) ShouldRefreshToken() bool {
 
 // AutoRefreshToken refreshes the token if needed
 func (a *authOp) AutoRefreshToken() error {
+	a.authMu.Lock()
 	if a.ShouldRefreshToken() {
 		err := a.GrantByRefreshToken()
 		if err != nil {
-			return a.GrantByPassword()
+			r := a.GrantByPassword()
+			a.authMu.Unlock()
+			return r
 		}
 	}
+	a.authMu.Unlock()
 	return nil
 }
 
